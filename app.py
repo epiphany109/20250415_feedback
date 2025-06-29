@@ -152,13 +152,21 @@ if font_prop:
 
 
 with tab3:
-    #st.text_input
     st.header("完整回饋留言")
     st.markdown("以下是篩選後，每份回饋的完整文字內容。")
     for index, row in filtered_df.reset_index(drop=True).iterrows():
         with st.expander(f"💬 回饋 #{index + 1} ({row['role']})"):
-            st.markdown(f"**【最吸引我的部分】**\n> {row['attractive_part']}")
-            st.markdown(f"**【期待與建議】**\n> {row['suggestions']}")
-            st.markdown(f"**【給講師的回饋】**\n> {row['feedback_to_lecturer']}")
+            # 我們自己的標題，是安全的，可以用 st.markdown
+            st.markdown("**【最吸引我的部分】**")
+            # 使用者的輸入，用 st.text 來安全顯示
+            st.text(row['attractive_part'])
+
+            st.markdown("**【期待與建議】**")
+            st.text(row['suggestions'])
+
+            st.markdown("**【給講師的回饋】**")
+            st.text(row['feedback_to_lecturer'])
+
             if pd.notna(row['additional_comments']) and row['additional_comments'].strip():
-                st.markdown(f"**【補充事項】**\n> {row['additional_comments']}")
+                st.markdown("**【補充事項】**")
+                st.text(row['additional_comments'])
